@@ -44,15 +44,15 @@ let is_palindrome lst =
 
 (* PROBLEM 7 *)
 type 'a node =
-    | One of 'a
-    | Many of 'a node list
+    | OneNode of 'a
+    | ManyNode of 'a node list
 ;;
 
 let flatten lst =
     let rec aux acc = function
         | [] -> acc
-        | One x :: xs -> aux (x::acc) xs
-        | Many xs :: xss -> aux (aux acc xs) xss
+        | OneNode x :: xs -> aux (x::acc) xs
+        | ManyNode xs :: xss -> aux (aux acc xs) xss
     in rev(aux [] lst)
 ;;
 
@@ -77,14 +77,117 @@ let pack lst =
 
 (* PROBLEM 10 *)
 let encode lst =
+    let rec aux acc packed =
+        match packed with
+        | [] -> acc
+        | []::xs -> aux acc xs
+        | (x::xs as hd)::xss -> aux (((length hd), x)::acc) xss
+    in rev(aux [] (pack lst))
+;;
+
+(* PROBLEM 11 *)
+type 'a rle =
+    | OneRLE of 'a
+    | ManyRLE of (int * 'a);;
+
+let encode2 lst =
+    let rec aux acc packed =
+        match packed with
+        | [] -> acc
+        | []::xs -> aux acc xs
+        | [x]::xs -> aux ((OneRLE x)::acc) xs
+        | (x::xs as hd)::xss -> aux ((ManyRLE ((length hd), x))::acc) xss
+    in rev(aux [] (pack lst))
+;;
+
+(* PROBLEM 12 *)
+let decode lst =
+    let rec aux acc lst =
+        match lst with
+        | [] -> acc
+        | ((OneRLE x)::xs) -> aux (x::acc) xs
+        | ((ManyRLE (2, x))::xs) -> aux (x::acc) ((OneRLE x)::xs)
+        | ((ManyRLE (counter, x))::xs) -> aux (x::acc) ((ManyRLE ((counter-1), x))::xs)
+    in rev(aux [] lst)
+;;
+
+(* PROBLEM 13 *)
+let encode3 lst =
     let rec aux acc lst =
         match acc, lst with
         | acc, [] -> acc
-        | [], x::xs -> aux [(1, x)] xs
-        | (counter, element)::tail, x::xs ->
+        | [], x::xs -> aux [OneRLE x] xs
+        | (OneRLE element)::tail, x::xs ->
                 if x=element
-                then aux (((counter+1), element)::tail) xs
-                else aux ((1, x)::acc) xs
+                then aux ((ManyRLE (2, element))::tail) xs
+                else aux ((OneRLE x)::acc) xs
+        | (ManyRLE (counter, element))::tail, x::xs ->
+                if x=element
+                then aux ((ManyRLE ((counter+1), element))::tail) xs
+                else aux ((OneRLE x)::acc) xs
     in rev(aux [] lst)
+;;
+
+(* PROBLEM 14 *)
+let duplicate lst =
+    let rec aux acc lst =
+        match lst with
+        | [] -> acc
+        | x::xs -> aux (x::(x::acc)) xs
+    in rev(aux [] lst)
+;;
+
+(* PROBLEM 15 *)
+let replicate lst num =
+    let rec aux acc counter lst =
+        match counter, lst with
+        | _, [] -> acc
+        | 1, x::xs -> aux (x::acc) num xs
+        | counter, x::xs -> aux (x::acc) (counter-1) lst
+    in rev(aux [] num lst)
+;;
+
+(* PROBLEM 16 *)
+let drop lst num =
+    let rec aux acc counter lst =
+        match counter, lst with
+        | _, [] -> acc
+        | 1, x::xs -> aux acc num xs
+        | counter, x::xs -> aux (x::acc) (counter-1) xs
+    in rev(aux [] num lst)
+;;
+
+(* PROBLEM 17 *)
+let split lst num =
+    let rec aux acc counter lst =
+        match counter, lst with
+        | _, [] -> ((rev acc), [])
+        | 0, lst -> ((rev acc), lst)
+        | counter, x::xs -> aux (x::acc) (counter-1) xs
+    in aux [] num lst
+;;
+
+(* PROBLEM 18 *)
+let slice lst start finish =
+    let rec aux acc start finish lst =
+        match start, finish, lst with
+        | _, _, [] -> acc
+        | _, b, x::xs when b < 0 -> acc
+        | a, b, x::xs when a > 0 -> aux acc (a-1) b xs
+        | a, b, x::xs when a <= 0 && b >= 0 -> aux (x::acc) (a-1) (b-1) xs
+        | _, _, _ -> [] (* Catch all for wrong args *)
+    in rev(aux [] start (finish-start) lst)
+;;
+
+(* PROBLEM 19 *)
+let rotate lst num =
+    let rec aux acc counter lst =
+        match counter, lst with
+        | counter, lst when counter <= 0 -> acc @ (rev lst)
+        | counter, x::xs -> aux (x::acc) (counter-1) xs
+        | _, _ -> acc @ (rev lst) (* Catch all for wrong args *)
+    in match num with
+    | num when num < 0 -> aux [] ((length lst) + (num mod (length lst))) (rev lst)
+    | num -> aux [] (num mod (length lst)) (rev lst)
 ;;
 
