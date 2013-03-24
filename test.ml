@@ -137,7 +137,31 @@ let () =
 
     print_string "19th problem... ";
     assert(rotate [`a;`b;`c;`d;`e;`f;`g;`h] 3 = [`d;`e;`f;`g;`h;`a;`b;`c]);
+    assert(rotate [`a;`b;`c;`d;`e;`f;`g;`h] 11 = [`d;`e;`f;`g;`h;`a;`b;`c]);
+    assert(rotate [`a;`b;`c;`d;`e;`f;`g;`h] (-10) = [`g;`h;`a;`b;`c;`d;`e;`f]);
     assert(rotate [`a;`b;`c;`d;`e;`f;`g;`h] (-2) = [`g;`h;`a;`b;`c;`d;`e;`f]);
+    print_string "PASSED\n";
+
+    print_string "20th problem... ";
+    assert(remove_at 0 [`a;`b;`c;`d] = [`b;`c;`d]);
+    assert(remove_at 0 [] = []);
+    assert(remove_at 1 [`a;`b;`c;`d] = [`a;`c;`d]);
+    assert(remove_at 3 [1; 2; 3; 4] = [1; 2; 3]);
+    assert(remove_at 4 [1; 2; 3; 4] = [1; 2; 3; 4]);
+    print_string "PASSED\n";
+
+    print_string "21st problem... ";
+    assert(insert_at `alfa 1 [`a;`b;`c;`d] = [`a;`alfa;`b;`c;`d]);
+    assert(insert_at `a 0 [] = [`a]);
+    assert(insert_at `a 0 [`b] = [`a; `b]);
+    assert(insert_at `a 1 [`b] = [`b; `a]);
+    assert(insert_at `c 2 [`a; `b] = [`a; `b; `c]);
+    print_string "PASSED\n";
+
+    print_string "22nd problem... ";
+    assert(range 4 9 = [4;5;6;7;8;9]);
+    assert(range 9 4 = [9;8;7;6;5;4]);
+    assert(range 5 5 = [5]);
     print_string "PASSED\n";
 
 ;;

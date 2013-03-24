@@ -174,8 +174,7 @@ let slice lst start finish =
         | _, _, [] -> acc
         | _, b, x::xs when b < 0 -> acc
         | a, b, x::xs when a > 0 -> aux acc (a-1) b xs
-        | a, b, x::xs when a <= 0 && b >= 0 -> aux (x::acc) (a-1) (b-1) xs
-        | _, _, _ -> [] (* Catch all for wrong args *)
+        | a, b, x::xs -> aux (x::acc) (a-1) (b-1) xs
     in rev(aux [] start (finish-start) lst)
 ;;
 
@@ -183,11 +182,43 @@ let slice lst start finish =
 let rotate lst num =
     let rec aux acc counter lst =
         match counter, lst with
-        | counter, lst when counter <= 0 -> acc @ (rev lst)
+        | 1, x::xs -> xs @ (rev (x::acc))
         | counter, x::xs -> aux (x::acc) (counter-1) xs
-        | _, _ -> acc @ (rev lst) (* Catch all for wrong args *)
+        | _, [] -> aux [] (length acc) acc (* Catch all, shouldnt be hit *)
     in match num with
-    | num when num < 0 -> aux [] ((length lst) + (num mod (length lst))) (rev lst)
-    | num -> aux [] (num mod (length lst)) (rev lst)
+    | num when num < 0 -> aux [] ((length lst) + (num mod (length lst))) lst
+    | num -> aux [] (num mod (length lst)) lst
+;;
+
+(* PROBLEM 20 *)
+let remove_at num lst =
+    let rec aux acc counter lst =
+        match counter, lst with
+        | counter, lst when counter >= (length lst) -> lst
+        | 0, x::xs -> (rev acc) @ xs
+        | counter, x::xs -> aux (x::acc) (counter-1) xs
+        | _, [] -> (rev acc)
+    in aux [] num lst
+;;
+    
+(* PROBLEM 21 *)
+let insert_at elem idx lst =
+    let rec aux elem acc counter lst =
+        match counter, lst with
+        | 0, lst -> (rev acc) @ (elem::lst)
+        | counter, x::xs -> aux elem (x::acc) (counter-1) xs
+        | _, [] -> (rev (elem::acc))
+    in aux elem [] idx lst
+;;
+
+(* PROBLEM 22 *)
+let range a b =
+    let rec aux acc a b =
+        match a, b with
+        | a, b when a <= b -> aux (a::acc) (a+1) b
+        | _, _ -> (rev acc)
+    in match a, b with
+    | a, b when a > b -> (rev (aux [] b a))
+    | _, _ -> aux [] a b
 ;;
 
