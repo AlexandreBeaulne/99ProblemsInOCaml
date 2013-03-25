@@ -222,3 +222,49 @@ let range a b =
     | _, _ -> aux [] a b
 ;;
 
+(* PROBLEM 23 *)
+let rand_select lst num =
+    let rec aux acc lst counter =
+        match counter with
+        | counter when counter <= 0 -> acc
+        | _ ->  let idx = (Random.int (length lst))
+                in let elem = (at idx lst)
+                   in match elem with
+                   | None -> acc
+                   | Some x -> aux (x::acc) (remove_at idx lst) (counter-1)
+    in aux [] lst num
+;;
+
+(* Helper functions *)
+
+let merge lstA lstB =
+    let rec aux acc lstA lstB =
+        match lstA, lstB with
+        | [], [] -> (rev acc)
+        | [], lstB -> (rev acc) @ lstB
+        | lstA, [] -> (rev acc) @ lstA
+        | x::xs, y::ys when x < y -> aux (x::acc) xs lstB
+        | lstA, y::ys -> aux (y::acc) lstA ys
+    in aux [] lstA lstB
+;;
+
+let rec sort lst =
+    match lst with
+    | [] -> []
+    | x::[] -> [x]
+    | lst ->
+            let (left, right) = (split lst ((length lst) / 2))
+            in (merge (sort left) (sort right))
+;;
+
+let is_subset sublst lst = 
+    let rec aux sublst lst =
+        match sublst, lst with
+        | [], _ -> true
+        | x::_, [] -> false
+        | x::xs, y::ys when x < y -> false
+        | x::xs, y::ys when x > y -> aux (x::xs) ys
+        | x::xs, y::ys -> aux xs ys
+    in aux (sort sublst) (sort lst)
+;;
+
