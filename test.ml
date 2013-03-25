@@ -19,6 +19,21 @@ let () =
     assert(not (is_subset [1] []));
     print_string "PASSED\n";
 
+    print_string "Testing inc... ";
+    assert(inc 2 = 3);
+    assert(inc (-3) = (-2));
+    print_string "PASSED\n";
+
+    print_string "Testing dec... ";
+    assert(dec 2 = 1);
+    assert(dec (-3) = (-4));
+    print_string "PASSED\n";
+
+    print_string "Testing map... ";
+    assert(map inc [] = []);
+    assert(map inc [1; 2; 3] = [2; 3; 4]);
+    print_string "PASSED\n";
+
     print_string "1st problem... ";
     assert(last [1; 2; 3] = Some 3);
     assert(last [] = None);
@@ -186,6 +201,26 @@ let () =
     assert(length (rand_select [`a; `b; `c; `d; `e; `f; `g] 3)=3);
     assert(is_subset (rand_select [3; 2; 4; 1; 5] 2) [3; 2; 4; 1; 5]);
     assert(is_subset (rand_select ["a"; "g"; "r"; "y"; "d"] 2) ["a"; "g"; "r"; "y"; "d"]);
+    print_string "PASSED\n";
+
+    print_string "24th problem... ";
+    assert(length (lotto_select 3 8)=3);
+    assert(length (lotto_select 50 100)=50);
+    assert(is_subset (lotto_select 20 100) (range 1 100));
+    assert(is_subset (lotto_select 10 20) (range 1 20));
+    print_string "PASSED\n";
+
+    print_string "25th problem... ";
+    assert(length (permutation [1; 2; 3; 4; 5]) = (length [1; 2; 3; 4; 5]));
+    assert(sort (permutation [4; 3; 5; 9; (-1); 3; 3; (-5); 0]) = (sort [4; 3; 5; 9; (-1); 3; 3; (-5); 0]));
+    assert(sort (permutation ["er"; "tj"; "df"; "df"; "dfdf"; "df"]) = (sort ["er"; "tj"; "df"; "df"; "dfdf"; "df"]));
+    print_string "PASSED\n";
+
+    print_string "26th problem... ";
+    assert(extract 1 ["a"] = [["a"]]);
+    assert(map sort (extract 2 ["a"; "b"; "c"]) = [["a"; "b"]; ["a"; "c"]; ["b"; "c"]]);
+    assert(map sort (extract 3 [1;2;3;4;5]) =
+        [[1;2;3];[1;2;4];[1;2;5];[1;3;4];[1;3;5];[1;4;5];[2;3;4];[2;3;5];[2;4;5];[3;4;5]]);
     print_string "PASSED\n";
 
 ;;

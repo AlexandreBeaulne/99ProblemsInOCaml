@@ -235,6 +235,78 @@ let rand_select lst num =
     in aux [] lst num
 ;;
 
+(* PROBLEM 24 *)
+let lotto_select num bound =
+    rand_select (range 1 bound) num
+;;
+
+(* PROBLEM 25 *)
+let permutation lst =
+    let rec aux acc lst =
+        match lst with
+        | [] -> acc
+        | lst -> let idx = (Random.int (length lst))
+                 in let elem = (at idx lst)
+                    in match elem with
+                    | None -> acc
+                    | Some x -> aux (x::acc) (remove_at idx lst)
+    in aux [] lst
+;;
+
+(* PROBLEM 26 *)
+let extract num lst = 
+    let rec aux left right =
+        match left, right with
+        | left, _ when (length left) = num -> [left]
+        | left, [] -> []
+        | left, x::xs -> (aux (x::left) xs) @ (aux left xs)
+    in aux [] lst
+;;
+
+(* PROBLEM 27 *)
+(*
+let inside elem lst =
+    let rec aux elem lst =
+        match lst with
+        | [] -> false
+        | x::xs when x = elem -> true
+        | x::xs -> aux elem xs
+    in aux elem lst
+;;
+
+let complement set subset = 
+    let rec aux acc set subset =
+        match subset with 
+        | [] -> acc
+        | x::xs when (inside x set) -> aux acc set xs
+        | x::xs -> aux (x::acc) set xs
+    in aux [] set subset
+;;
+
+let unpack lstlst =
+    let rec aux acc lstlst =
+        match lstlst with
+        | [] -> acc
+        | []::xss -> aux acc xss
+        | (x::[])::xss -> aux (x::acc) xss
+        | (x::xs)::xss -> aux (x::acc) (xs::xss)
+    in (rev (aux [] lstlst))
+;;
+
+let sets = map unpack acc in
+let complements = map complement elements sets in
+let subsets = map (extract x) complements in
+
+let group elements sizes =
+    let rec aux acc sizes =
+        match sizes with
+        | [] -> acc
+        | x::xs -> aux  xs
+;;
+
+
+*)
+
 (* Helper functions *)
 
 let merge lstA lstB =
@@ -266,5 +338,16 @@ let is_subset sublst lst =
         | x::xs, y::ys when x > y -> aux (x::xs) ys
         | x::xs, y::ys -> aux xs ys
     in aux (sort sublst) (sort lst)
+;;
+
+let inc x = (x + 1);;
+let dec x = (x - 1);;
+
+let map f lst =
+    let rec aux acc lst =
+        match lst with
+        | [] -> acc
+        | x::xs -> aux ((f x)::acc) xs
+    in (rev (aux [] lst))
 ;;
 
