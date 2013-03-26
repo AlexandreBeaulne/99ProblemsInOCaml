@@ -74,6 +74,17 @@ let () =
         [(1, 3); (0, 1); (3, 1); (2, 2)]);
     print_string "PASSED\n";
 
+    print_string "Testing index... ";
+    assert(index (fun b -> b) [true; false; false; true; false; true] = [0; 3; 5]);
+    assert(index (fun b -> b) [false; false; false] = []);
+    assert(index (fun b -> b) [true; true; true] = [0; 1; 2]);
+    print_string "PASSED\n";
+    
+    print_string "Testing find... ";
+    assert(find (fun x -> x > 5) [1; 2; 3; 4; 5; 9; 8; 7; 1; 2; 3] = Some 9);
+    assert(find (fun x -> x > 5) [1; 2; 3; 4; 5; 3; 3; 3; 1; 2; 3] = None);
+    print_string "PASSED\n";
+
     print_string "1st problem... ";
     assert(last [1; 2; 3] = Some 3);
     assert(last [] = None);
@@ -273,9 +284,27 @@ let () =
     print_string "PASSED\n";
 
     print_string "28th problem... ";
-    assert(length_sort [[3; 2; 1]; [2; 1]; [1]; []] = [[]; [1]; [2; 1]; [3; 2; 1]]);
-    assert(frequency_sort [ [`a;`b;`c]; [`d;`e]; [`f;`g;`h]; [`d;`e]; [`i;`j;`k;`l]; [`m;`n]; [`o] ]
-        = [[`o]; [`i; `j; `k; `l]; [`f; `g; `h]; [`a; `b; `c]; [`m; `n]; [`d; `e]; [`d; `e]]);
+    assert(length_sort [[`a;`b;`c]; [`d;`e]; [`f;`g;`h]; [`d;`e];
+                        [`i;`j;`k;`l]; [`m;`n]; [`o]] =
+                    [[`o]; [`m; `n]; [`d; `e]; [`d; `e]; [`f; `g; `h]; [`a; `b;
+                    `c]; [`i; `j; `k; `l]]);
+    assert(frequency_sort [ [`a;`b;`c]; [`d;`e]; [`f;`g;`h]; [`d;`e];
+                   [`i;`j;`k;`l]; [`m;`n]; [`o] ] =
+               [[`o]; [`i; `j; `k; `l]; [`f; `g; `h]; [`a; `b; `c]; [`m; `n];
+               [`d; `e]; [`d; `e]]);
     print_string "PASSED\n";
+
+    print_string "29th problem... ";
+    assert(is_prime(1)  = true);
+    assert(is_prime(2)  = true);
+    assert(is_prime(97)  = true);
+    assert(is_prime(101)  = true);
+    assert(is_prime(113)  = true);
+    assert(is_prime(4)  = false);
+    assert(is_prime(9)  = false);
+    assert(is_prime(50)  = false);
+    assert(is_prime(55)  = false);
+    print_string "PASSED\n";
+
 ;;
 

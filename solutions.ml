@@ -322,7 +322,7 @@ let group elements sizes =
     in aux [[]] sizes
 ;;
 
-(* PROBLEM 27 *)
+(* PROBLEM 28 *)
 let merge comp lstA lstB =
     let rec aux acc lstA lstB =
         match lstA, lstB with
@@ -374,6 +374,49 @@ let length_histogram lstlst =
 let frequency_sort lstlst =
     let histogram = (length_histogram lstlst) in
     sort (fun a b -> key_get (length a) histogram < key_get (length b) histogram) lstlst
+;;
+
+(* PROBLEM 29 *)
+
+(* index (fun b -> b) [true; false; false; true; false; true] = [0; 3; 5] *)
+let index f lst =
+    let rec aux acc counter lst =
+        match lst with
+        | [] -> rev acc
+        | x::xs when (f x) -> aux (counter::acc) (counter + 1) xs 
+        | x::xs -> aux acc (counter + 1) xs 
+    in aux [] 0 lst
+;;
+
+(* find (fun a -> a > 5) [1; 2; 3; 4; 8; 9] = 8 *)
+let rec find f lst = 
+    match lst with
+    | [] -> None
+    | x::xs when (f x) -> Some x
+    | _::xs -> find f xs
+;;
+
+(* Sieve of Eratosthenes, implemented imperatively, more natural this way *)
+let sieve ubound =
+    let primes = Array.init ubound (fun _ -> true) in
+    let counter = ref 2 in
+    while !counter < ubound do
+        let p = ref (2 * !counter) in
+        while !p <= ubound do
+            primes.(!p - 1) <- false;
+            p := !p + !counter;
+        done;
+        let candidates = (map (fun x -> x + 1) (index (fun b -> b) (Array.to_list primes))) in
+        let temp = find (fun x -> x > !counter) candidates in
+        counter := match temp with | None -> ubound | Some x -> x
+    done;
+    map (fun x -> x + 1) (index (fun b -> b) (Array.to_list primes))
+;;
+
+let is_prime num =
+    match rev (sieve num) with
+    | x::_ when x = num -> true
+    | _ -> false
 ;;
 
 (* Helper functions *)
