@@ -58,6 +58,22 @@ let () =
     assert(map2 (fun x y -> (x+y)) [1; 2; (-2)] [4; (-4); 5] = [5; (-2); 3]);
     print_string "PASSED\n";
 
+    print_string "Testing key_inc... ";
+    assert(key_inc "a" [("a", 1); ("b",2)] =  [("a", 2); ("b", 2)]);
+    assert(key_inc "c" [("a", 1); ("b",2)] =  [("c", 1); ("b", 2); ("a", 1)]);
+    assert(key_inc 3 [(2, 1); (3, (-3))] =  [(3, (-2)); (2, 1)]);
+    print_string "PASSED\n";
+
+    print_string "Testing key_get... ";
+    assert(key_get "key" [("a", 2); ("key", (-666)); ("b", (-222))] = (-666));
+    assert(key_get "key" [("a", 2); ("c", (-666)); ("b", (-222))] = 0);
+    print_string "PASSED\n";
+
+    print_string "Testing length_histogram... ";
+    assert(length_histogram [[1; 2; 3;]; []; [1; 2]; [1; 2]; [1]; [1]; [1]] =
+        [(1, 3); (0, 1); (3, 1); (2, 2)]);
+    print_string "PASSED\n";
+
     print_string "1st problem... ";
     assert(last [1; 2; 3] = Some 3);
     assert(last [] = None);
@@ -247,5 +263,19 @@ let () =
         [[1;2;3];[1;2;4];[1;2;5];[1;3;4];[1;3;5];[1;4;5];[2;3;4];[2;3;5];[2;4;5];[3;4;5]]);
     print_string "PASSED\n";
 
+    print_string "27th problem... ";
+    assert(group ["a"; "b"; "c"] [2;1] = [[["c"]; ["b"; "a"]]; [["b"]; ["c"; "a"]]; [["a"]; ["c"; "b"]]]);
+    assert(group ["a"; "b"; "c"] [1;2] = [[["c"; "b"]; ["a"]]; [["c"; "a"]; ["b"]]; [["b"; "a"]; ["c"]]]);
+    assert(group [`a;`b;`c;`d] [2;1] =
+        [[[`c]; [`b; `a]]; [[`d]; [`b; `a]]; [[`b]; [`c; `a]]; [[`d]; [`c; `a]];
+         [[`b]; [`d; `a]]; [[`c]; [`d; `a]]; [[`a]; [`c; `b]]; [[`d]; [`c; `b]];
+         [[`a]; [`d; `b]]; [[`c]; [`d; `b]]; [[`a]; [`d; `c]]; [[`b]; [`d; `c]]]);
+    print_string "PASSED\n";
+
+    print_string "28th problem... ";
+    assert(length_sort [[3; 2; 1]; [2; 1]; [1]; []] = [[]; [1]; [2; 1]; [3; 2; 1]]);
+    assert(frequency_sort [ [`a;`b;`c]; [`d;`e]; [`f;`g;`h]; [`d;`e]; [`i;`j;`k;`l]; [`m;`n]; [`o] ]
+        = [[`o]; [`i; `j; `k; `l]; [`f; `g; `h]; [`a; `b; `c]; [`m; `n]; [`d; `e]; [`d; `e]]);
+    print_string "PASSED\n";
 ;;
 

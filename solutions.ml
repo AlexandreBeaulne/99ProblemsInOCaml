@@ -317,31 +317,69 @@ let group elements sizes =
             let sets = map unpack acc in
             let complements = map (complement elements) sets in
             let subsets = map (extract x) complements in
-            let acc2 = map2 (fun x y -> map (fun a -> a::y) x) subsets acc in
+            let acc2 = unpack (map2 (fun x y -> map (fun a -> a::y) x) subsets acc) in
                 aux acc2 xs
-    in aux [] sizes
+    in aux [[]] sizes
 ;;
 
-(* Helper functions *)
-
-let merge lstA lstB =
+(* PROBLEM 27 *)
+let merge comp lstA lstB =
     let rec aux acc lstA lstB =
         match lstA, lstB with
         | [], [] -> (rev acc)
         | [], lstB -> (rev acc) @ lstB
         | lstA, [] -> (rev acc) @ lstA
-        | x::xs, y::ys when x < y -> aux (x::acc) xs lstB
+        | x::xs, y::ys when (comp x y) -> aux (x::acc) xs lstB
         | lstA, y::ys -> aux (y::acc) lstA ys
     in aux [] lstA lstB
 ;;
 
-let rec sort lst =
+let rec sort comp lst =
     match lst with
     | [] -> []
     | x::[] -> [x]
     | lst ->
             let (left, right) = (split lst ((length lst) / 2))
-            in (merge (sort left) (sort right))
+            in (merge comp (sort comp left) (sort comp right))
+;;
+
+let length_sort lstlst =
+    sort (fun a b -> (length a) < (length b)) lstlst
+;;
+
+let key_inc key keyvalues =
+    let rec aux acc keyvalues =
+        match keyvalues with
+        | [] -> ((key, 1)::acc)
+        | (a_key, value)::xs when a_key = key -> ((key, (value + 1))::acc) @ xs
+        | x::xs -> aux (x::acc) xs
+    in aux [] keyvalues
+;;
+
+let rec key_get key keyvalues =
+    match keyvalues with
+    | [] -> 0
+    | (a_key, value)::xs when a_key = key -> value
+    | _::xs -> key_get key xs
+;;
+
+let length_histogram lstlst =
+    let rec aux acc lstlst =
+        match lstlst with
+        | [] -> acc
+        | x::xs -> aux (key_inc (length x) acc) xs
+    in aux [] lstlst
+;;
+
+let frequency_sort lstlst =
+    let histogram = (length_histogram lstlst) in
+    sort (fun a b -> key_get (length a) histogram < key_get (length b) histogram) lstlst
+;;
+
+(* Helper functions *)
+
+let sort lst =
+    sort (fun x y -> x<y) lst
 ;;
 
 let is_subset sublst lst = 
