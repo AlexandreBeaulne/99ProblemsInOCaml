@@ -34,6 +34,30 @@ let () =
     assert(map inc [1; 2; 3] = [2; 3; 4]);
     print_string "PASSED\n";
 
+    print_string "Testing inside... ";
+    assert(inside 3 [1; 2; 3; 4]);
+    assert(not (inside 5 [1; 2; 3; 4]));
+    assert(inside "c" ["c"; "b"; "a"; "d"]);
+    assert(inside "c" ["d"; "b"; "a"; "c"]);
+    assert(not (inside "e" ["d"; "b"; "a"; "c"]));
+    print_string "PASSED\n";
+
+    print_string "Testing complement... ";
+    assert(complement [1; 2; 3; 4; 5; 6] [1; 2; 3] = [4; 5; 6]);
+    assert(complement [1; 2; 3; 4; 5; 6] [4; 5; 6] = [1; 2; 3]);
+    assert(complement ["a"; "b"; "c"] [] = ["a"; "b"; "c"]);
+    assert(complement ["a"; "b"; "c"] ["a"; "b"; "c"] = []);
+    print_string "PASSED\n";
+
+    print_string "Testing unpack... ";
+    assert(unpack [[1; 2]; []; [3; 4]] = [1; 2; 3; 4]);
+    print_string "PASSED\n";
+
+    print_string "Testing map2... ";
+    assert(map2 (fun x y -> (x+y)) [1; 1; 1] [1; 1; 1] = [2; 2; 2]);
+    assert(map2 (fun x y -> (x+y)) [1; 2; (-2)] [4; (-4); 5] = [5; (-2); 3]);
+    print_string "PASSED\n";
+
     print_string "1st problem... ";
     assert(last [1; 2; 3] = Some 3);
     assert(last [] = None);

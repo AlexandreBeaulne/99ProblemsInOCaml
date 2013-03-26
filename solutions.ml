@@ -264,7 +264,6 @@ let extract num lst =
 ;;
 
 (* PROBLEM 27 *)
-(*
 let inside elem lst =
     let rec aux elem lst =
         match lst with
@@ -275,12 +274,12 @@ let inside elem lst =
 ;;
 
 let complement set subset = 
-    let rec aux acc set subset =
-        match subset with 
+    let rec aux acc set =
+        match set with 
         | [] -> acc
-        | x::xs when (inside x set) -> aux acc set xs
-        | x::xs -> aux (x::acc) set xs
-    in aux [] set subset
+        | x::xs when (inside x subset) -> aux acc xs
+        | x::xs -> aux (x::acc) xs
+    in rev (aux [] set)
 ;;
 
 let unpack lstlst =
@@ -293,19 +292,35 @@ let unpack lstlst =
     in (rev (aux [] lstlst))
 ;;
 
-let sets = map unpack acc in
-let complements = map complement elements sets in
-let subsets = map (extract x) complements in
+let map f lst =
+    let rec aux acc lst =
+        match lst with
+        | [] -> acc
+        | x::xs -> aux ((f x)::acc) xs
+    in (rev (aux [] lst))
+;;
+
+let map2 f lst1 lst2 =
+    let rec aux acc lst1 lst2 =
+        match lst1, lst2 with
+        | [], _ -> acc
+        | _, [] -> acc
+        | x::xs, y::ys -> aux ((f x y)::acc) xs ys
+    in rev (aux [] lst1 lst2)
+;;
 
 let group elements sizes =
     let rec aux acc sizes =
         match sizes with
         | [] -> acc
-        | x::xs -> aux  xs
+        | x::xs ->
+            let sets = map unpack acc in
+            let complements = map (complement elements) sets in
+            let subsets = map (extract x) complements in
+            let acc2 = map2 (fun x y -> map (fun a -> a::y) x) subsets acc in
+                aux acc2 xs
+    in aux [] sizes
 ;;
-
-
-*)
 
 (* Helper functions *)
 
@@ -342,12 +357,4 @@ let is_subset sublst lst =
 
 let inc x = (x + 1);;
 let dec x = (x - 1);;
-
-let map f lst =
-    let rec aux acc lst =
-        match lst with
-        | [] -> acc
-        | x::xs -> aux ((f x)::acc) xs
-    in (rev (aux [] lst))
-;;
 
