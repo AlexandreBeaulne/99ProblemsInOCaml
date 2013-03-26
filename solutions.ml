@@ -419,6 +419,50 @@ let is_prime num =
     | _ -> false
 ;;
 
+(* PROBLEM 30 *)
+(* Euclid's algorithm *)
+let rec gcd m n =
+    let m1, n1 = if m < n then n, m else m, n in
+    let r = m1 - n1 in
+    let m2, n2 = n1, r in
+    if n2 = 0 then m2 else gcd m2 n2
+;;
+
+(* PROBLEM 31 *)
+let coprime m n =
+    gcd m n = 1
+;;
+
+(* PROBLEM 32 *)
+let phi m =
+    let rec aux n counter =
+        if n = 0
+        then counter
+        else
+            if coprime m n
+            then aux (n - 1) (counter + 1)
+            else aux (n - 1) counter
+    in aux (m - 1) 0
+;;
+
+(* PROBLEM 33 *)
+let rec reduce f base lst =
+    match lst with
+    | [] -> base
+    | x::xs -> reduce f (f base x) xs
+;;
+
+let factors num =
+    let rec aux acc i rem =
+        if (reduce (fun x y -> x*y) 1 acc) = num
+        then rev acc
+        else
+            match i, rem with
+            | i, rem when rem mod i = 0 -> aux (i::acc) i (rem/i)
+            | i, rem -> aux acc (i + 1) rem
+    in aux [] 1 num
+;;
+
 (* Helper functions *)
 
 let sort lst =

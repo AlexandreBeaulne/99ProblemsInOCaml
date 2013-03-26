@@ -306,5 +306,25 @@ let () =
     assert(is_prime(55)  = false);
     print_string "PASSED\n";
 
+    print_string "30th problem... ";
+    assert(gcd 13 27 = 1);
+    assert(gcd 20536 7826 = 2);
+    assert(gcd 72 81 = 9);
+    print_string "PASSED\n";
+
+    print_string "31st problem... ";
+    assert(coprime 13 27);
+    assert(coprime 20536 7826 = false);
+    print_string "PASSED\n";
+
+    print_string "32nd problem... ";
+    assert(phi 10 = 4);
+    assert(phi 13 = 12);
+    print_string "PASSED\n";
+
+    print_string "33rd problem... ";
+    assert(factors 315 = [3;3;5;7]);
+    print_string "PASSED\n";
+
 ;;
 
