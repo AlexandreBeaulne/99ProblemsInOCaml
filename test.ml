@@ -1,104 +1,23 @@
+
+open Utils
 open Solutions
 
 let () =
-    print_string "Testing sort... ";
-    assert(sort [] = []);
-    assert(sort [-1] = [-1]);
-    assert(sort [1;2;3] = [1;2;3]);
-    assert(sort [6.99; 3.44; (-8.88); (-1.00); 0.00] = [(-8.88); (-1.00); 0.00; 3.44; 6.99]);
-    assert(sort ["r"; "w"; "a"; "e"; "p"] = ["a"; "e"; "p"; "r"; "w"]);
-    print_string "PASSED\n";
 
-    print_string "Testing is_subset... ";
-    assert(is_subset [2; 4; 6] [1; 2; 3; 4; 5; 6; 7; 8]);
-    assert(is_subset [2; 4; 6] [8; 6; 7; 4; 5; 2; 3; 1]);
-    assert(is_subset ["d"; "e"; "f"] ["a"; "b"; "c"; "d"; "e"; "f"]);
-    assert(is_subset [] [`a; `b; `c]);
-    assert(is_subset ["string1"] ["string1"; "string2"]);
-    assert(not (is_subset [1; 2; 3] [1; 2]));
-    assert(not (is_subset [1] []));
-    print_string "PASSED\n";
-
-    print_string "Testing inc... ";
-    assert(inc 2 = 3);
-    assert(inc (-3) = (-2));
-    print_string "PASSED\n";
-
-    print_string "Testing dec... ";
-    assert(dec 2 = 1);
-    assert(dec (-3) = (-4));
-    print_string "PASSED\n";
-
-    print_string "Testing map... ";
-    assert(map inc [] = []);
-    assert(map inc [1; 2; 3] = [2; 3; 4]);
-    print_string "PASSED\n";
-
-    print_string "Testing inside... ";
-    assert(inside 3 [1; 2; 3; 4]);
-    assert(not (inside 5 [1; 2; 3; 4]));
-    assert(inside "c" ["c"; "b"; "a"; "d"]);
-    assert(inside "c" ["d"; "b"; "a"; "c"]);
-    assert(not (inside "e" ["d"; "b"; "a"; "c"]));
-    print_string "PASSED\n";
-
-    print_string "Testing complement... ";
-    assert(complement [1; 2; 3; 4; 5; 6] [1; 2; 3] = [4; 5; 6]);
-    assert(complement [1; 2; 3; 4; 5; 6] [4; 5; 6] = [1; 2; 3]);
-    assert(complement ["a"; "b"; "c"] [] = ["a"; "b"; "c"]);
-    assert(complement ["a"; "b"; "c"] ["a"; "b"; "c"] = []);
-    print_string "PASSED\n";
-
-    print_string "Testing unpack... ";
-    assert(unpack [[1; 2]; []; [3; 4]] = [1; 2; 3; 4]);
-    print_string "PASSED\n";
-
-    print_string "Testing map2... ";
-    assert(map2 (fun x y -> (x+y)) [1; 1; 1] [1; 1; 1] = [2; 2; 2]);
-    assert(map2 (fun x y -> (x+y)) [1; 2; (-2)] [4; (-4); 5] = [5; (-2); 3]);
-    print_string "PASSED\n";
-
-    print_string "Testing key_inc... ";
-    assert(key_inc "a" [("a", 1); ("b",2)] =  [("a", 2); ("b", 2)]);
-    assert(key_inc "c" [("a", 1); ("b",2)] =  [("c", 1); ("b", 2); ("a", 1)]);
-    assert(key_inc 3 [(2, 1); (3, (-3))] =  [(3, (-2)); (2, 1)]);
-    print_string "PASSED\n";
-
-    print_string "Testing key_get... ";
-    assert(key_get "key" [("a", 2); ("key", (-666)); ("b", (-222))] = (-666));
-    assert(key_get "key" [("a", 2); ("c", (-666)); ("b", (-222))] = 0);
-    print_string "PASSED\n";
-
-    print_string "Testing length_histogram... ";
-    assert(length_histogram [[1; 2; 3;]; []; [1; 2]; [1; 2]; [1]; [1]; [1]] =
-        [(1, 3); (0, 1); (3, 1); (2, 2)]);
-    print_string "PASSED\n";
-
-    print_string "Testing index... ";
-    assert(index (fun b -> b) [true; false; false; true; false; true] = [0; 3; 5]);
-    assert(index (fun b -> b) [false; false; false] = []);
-    assert(index (fun b -> b) [true; true; true] = [0; 1; 2]);
-    print_string "PASSED\n";
-    
-    print_string "Testing find... ";
-    assert(find (fun x -> x > 5) [1; 2; 3; 4; 5; 9; 8; 7; 1; 2; 3] = Some 9);
-    assert(find (fun x -> x > 5) [1; 2; 3; 4; 5; 3; 3; 3; 1; 2; 3] = None);
-    print_string "PASSED\n";
-
-    print_string "1st problem... ";
+    print_string "01st problem... ";
     assert(last [1; 2; 3] = Some 3);
     assert(last [] = None);
     assert(last ["a"; "b"; "c"] = Some "c");
     print_string "PASSED\n";
 
-    print_string "2nd problem... ";
+    print_string "02nd problem... ";
     assert(last_two [1; 2; 3] = Some (2,3));
     assert(last_two [] = None);
     assert(last_two ["a"; "b"; "c"] = Some ("b","c"));
     assert(last_two ["a"] = None);
     print_string "PASSED\n";
 
-    print_string "3rd problem... ";
+    print_string "03rd problem... ";
     assert(at 0 ["a"] = Some "a");
     assert(at 1 [1; 2; 3] = Some 2);
     assert(at 1 [] = None);
@@ -106,7 +25,7 @@ let () =
     assert(at 3 ["a"; "b"; "c"] = None);
     print_string "PASSED\n";
 
-    print_string "4th problem... ";
+    print_string "04th problem... ";
     assert(length ["a"] = 1);
     assert(length [1; 2; 3] = 3);
     assert(length [] = 0);
@@ -114,14 +33,14 @@ let () =
     assert(length ["a"; "b"; "c"] = 3);
     print_string "PASSED\n";
 
-    print_string "5th problem... ";
+    print_string "05th problem... ";
     assert(rev ["a"] = ["a"]);
     assert(rev [1; 2; 3] = [3; 2; 1]);
     assert(rev [] = []);
     assert(rev ["a"; "b"; "c"] = ["c"; "b"; "a"]);
     print_string "PASSED\n";
 
-    print_string "6th problem... ";
+    print_string "06th problem... ";
     assert(is_palindrome ["a"]);
     assert(is_palindrome [1; 2; 1]);
     assert(is_palindrome []);
@@ -130,7 +49,7 @@ let () =
     assert(not (is_palindrome [1; 2]));
     print_string "PASSED\n";
 
-    print_string "7th problem... ";
+    print_string "07th problem... ";
     assert(flatten [] = []);
     assert(flatten [ManyNode [ManyNode []]] = []);
     assert(flatten [ OneNode `a ; ManyNode [ OneNode `b ; ManyNode [ OneNode `c
@@ -139,12 +58,12 @@ let () =
     OneNode `e ] = [ `a ; `b ; `c ; `d ; `e ]);
     print_string "PASSED\n";
 
-    print_string "8th problem... ";
+    print_string "08th problem... ";
     assert(compress [] = []);
     assert(compress [`a;`a;`a;`a;`b;`c;`c;`a;`a;`d;`e;`e;`e;`e] = [`a;`b;`c;`a;`d;`e]);
     print_string "PASSED\n";
 
-    print_string "9th problem... ";
+    print_string "09th problem... ";
     assert(pack [] = []);
     assert(pack [`a] = [[`a]]);
     assert(pack [`a;`a;`a;`a;`b;`c;`c;`a;`a;`d;`d;`e;`e;`e;`e] = [[`a;`a;`a;`a]; [`b]; [`c;`c]; [`a;`a]; [`d;`d]; [`e;`e;`e;`e]]);
@@ -263,14 +182,14 @@ let () =
 
     print_string "25th problem... ";
     assert(length (permutation [1; 2; 3; 4; 5]) = (length [1; 2; 3; 4; 5]));
-    assert(sort (permutation [4; 3; 5; 9; (-1); 3; 3; (-5); 0]) = (sort [4; 3; 5; 9; (-1); 3; 3; (-5); 0]));
-    assert(sort (permutation ["er"; "tj"; "df"; "df"; "dfdf"; "df"]) = (sort ["er"; "tj"; "df"; "df"; "dfdf"; "df"]));
+    assert(sort (fun x y -> x<y) (permutation [4; 3; 5; 9; (-1); 3; 3; (-5); 0]) = (sort (fun x y -> x<y) [4; 3; 5; 9; (-1); 3; 3; (-5); 0]));
+    assert(sort (fun x y -> x<y) (permutation ["er"; "tj"; "df"; "df"; "dfdf"; "df"]) = (sort (fun x y -> x<y) ["er"; "tj"; "df"; "df"; "dfdf"; "df"]));
     print_string "PASSED\n";
 
     print_string "26th problem... ";
     assert(extract 1 ["a"] = [["a"]]);
-    assert(map sort (extract 2 ["a"; "b"; "c"]) = [["a"; "b"]; ["a"; "c"]; ["b"; "c"]]);
-    assert(map sort (extract 3 [1;2;3;4;5]) =
+    assert(map (sort (fun x y -> x<y)) (extract 2 ["a"; "b"; "c"]) = [["a"; "b"]; ["a"; "c"]; ["b"; "c"]]);
+    assert(map (sort (fun x y -> x<y)) (extract 3 [1;2;3;4;5]) =
         [[1;2;3];[1;2;4];[1;2;5];[1;3;4];[1;3;5];[1;4;5];[2;3;4];[2;3;5];[2;4;5];[3;4;5]]);
     print_string "PASSED\n";
 
@@ -335,13 +254,13 @@ let () =
     assert(phi_improved 13 = 12);
     print_string "PASSED\n";
 
-    print_string "36th problem...\n";
+    print_string "\n36th problem...\n";
     print_string "phi 10090 takes ";
     print_float  (time phi 10090);
     print_string "ms\n";
     print_string "phi_improved 10090 takes ";
     print_float  (time phi_improved 10090);
-    print_string "ms\n";
+    print_string "ms\n\n";
 
     print_string "37th problem... ";
     assert(all_primes 12 20 = [13; 17; 19]);
