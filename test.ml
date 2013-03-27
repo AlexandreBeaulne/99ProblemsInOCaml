@@ -323,8 +323,29 @@ let () =
     print_string "PASSED\n";
 
     print_string "33rd problem... ";
-    assert(factors 315 = [3;3;5;7]);
+    assert(factors 315 = [3; 3; 5; 7]);
     print_string "PASSED\n";
 
+    print_string "34th problem... ";
+    assert(factors2 315 = [(3,2); (5,1); (7,1)]);
+    print_string "PASSED\n";
+
+    print_string "35th problem... ";
+    assert(phi_improved 10 = 4);
+    assert(phi_improved 13 = 12);
+    print_string "PASSED\n";
+
+    print_string "36th problem...\n";
+    print_string "phi 10090 takes ";
+    print_float  (time phi 10090);
+    print_string "ms\n";
+    print_string "phi_improved 10090 takes ";
+    print_float  (time phi_improved 10090);
+    print_string "ms\n";
+
+    print_string "37th problem... ";
+    assert(all_primes 12 20 = [13; 17; 19]);
+    assert(length (all_primes 2 7920) = 1000);
+    print_string "PASSED\n";
 ;;
 

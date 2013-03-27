@@ -463,6 +463,38 @@ let factors num =
     in aux [] 2 num
 ;;
 
+(* PROBLEM 34 *)
+let factors2 num = 
+    map (fun (x,y) -> (y,x)) (encode (factors num))
+;;
+
+(* PROBLEM 35 *)
+let exp base power = 
+    let rec aux acc power =
+        if power = 0
+        then acc
+        else aux (acc*base) (power -1)
+    in aux 1 power
+;;
+
+let phi_improved num =
+    reduce (fun x y -> x*y) 1 (map (fun (x,y) -> (x - 1) * (exp x (y - 1))) (factors2 num))
+;;
+
+(* PROBLEM 36 *)
+let filter f lst = 
+    let rec aux acc lst =
+        match lst with
+        | [] -> rev acc
+        | x::xs when (f x) -> aux (x::acc) xs
+        | _::xs -> aux acc xs
+    in aux [] lst
+;;
+
+let all_primes lbound ubound = 
+    filter (fun x -> x >= lbound) (sieve ubound)
+;;
+
 (* Helper functions *)
 
 let sort lst =
@@ -482,4 +514,12 @@ let is_subset sublst lst =
 
 let inc x = (x + 1);;
 let dec x = (x - 1);;
+
+let time action arg =
+    (* in milliseconds *)
+    let start_time = Unix.gettimeofday() in
+    ignore (action arg);
+    let finish_time = Unix.gettimeofday() in
+    1000.0 *. (finish_time -. start_time)
+;;
 
