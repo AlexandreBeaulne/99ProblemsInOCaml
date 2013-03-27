@@ -457,10 +457,10 @@ let factors num =
         if (reduce (fun x y -> x*y) 1 acc) = num
         then rev acc
         else
-            match i, rem with
-            | i, rem when rem mod i = 0 -> aux (i::acc) i (rem/i)
-            | i, rem -> aux acc (i + 1) rem
-    in aux [] 1 num
+            if rem mod i = 0
+            then aux (i::acc) i (rem/i)
+            else aux acc (i + 1) rem
+    in aux [] 2 num
 ;;
 
 (* Helper functions *)
