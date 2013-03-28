@@ -354,7 +354,50 @@ let phi_improved num =
 ;;
 
 (* PROBLEM 36 *)
+(* Benchmarks are run in file test.ml *)
+
+(* PROBLEM 37 *)
 let all_primes lbound ubound = 
     filter (fun x -> x >= lbound) (sieve ubound)
+;;
+
+(* PROBLEM 38 *)
+let goldbach num =
+    let rec aux x =
+        if is_prime x && is_prime (num - x)
+        then ((num - x), x)
+        else aux (x - 2)
+    in aux (num - 3)
+;;
+
+(* PROBLEM 39 *)
+let rec goldbach_list lbound ubound =
+    let temp = if (lbound mod 2) = 0 then lbound else (lbound + 1) in
+    let rec aux acc counter =
+        if counter > ubound
+        then rev acc
+        else aux ((counter, (goldbach counter))::acc) (counter+2) 
+    in aux [] temp
+;;
+
+let bounded_goldbach num limit =
+    let rec aux x =
+        match x with
+        | x when x < limit -> None
+        | x when is_prime x && is_prime (num - x) -> Some ((num - x), x)
+        | x -> aux (x - 2)
+    in aux (num - limit)
+;;
+
+let rec goldbach_limit lbound ubound limit =
+    let temp = if (lbound mod 2) = 0 then lbound else (lbound + 1) in
+    let rec aux acc counter =
+        if counter > ubound
+        then rev acc
+        else
+            match bounded_goldbach counter limit with
+            | None -> aux acc (counter+2)
+            | Some x -> aux ((counter, x)::acc) (counter+2) 
+    in aux [] temp
 ;;
 

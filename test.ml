@@ -266,5 +266,17 @@ let () =
     assert(all_primes 12 20 = [13; 17; 19]);
     assert(length (all_primes 2 7920) = 1000);
     print_string "PASSED\n";
+
+    print_string "38th problem... ";
+    assert(goldbach 28 = (5, 23));
+    assert(goldbach 16 = (3, 13));
+    print_string "PASSED\n";
+
+    print_string "39th problem... ";
+    assert((goldbach_list 9 20) = [(10, (3, 7)); (12, (5, 7)); (14, (3, 11)); (16, (3, 13)); (18, (5, 13)); (20, (3, 17))]);
+(*    assert(goldbach_limit 1 2000 50
+        = [(992, (73, 919)); (1382, (61, 1321)); (1856, (67, 1789)); (1928, (61,
+        1867))]);*)
+    print_string "PASSED\n";
 ;;
 
