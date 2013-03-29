@@ -172,6 +172,23 @@ let exp base power =
 let inc x = (x + 1);;
 let dec x = (x - 1);;
 
+(* Memoization *)
+
+(* takes a function foo, and returns
+ * the exact same function foo but
+ * with cached inputs/outputs *)
+
+let memoize func =
+    let cache = ref [] in
+    fun args ->
+        match find (fun x -> fst x = args) !cache with
+        | Some (args, output) -> output
+        | None ->
+                let output = func args in
+                cache := (args, output)::!cache;
+                output
+;;
+
 (* Other *)
 
 let time action arg =
