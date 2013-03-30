@@ -363,8 +363,9 @@ let all_primes lbound ubound =
 
 (* PROBLEM 38 *)
 let goldbach num =
+    let primes = all_primes 1 num in
     let rec aux x =
-        if is_prime x && is_prime (num - x)
+        if inside x primes && inside (num - x) primes
         then ((num - x), x)
         else aux (x - 2)
     in aux (num - 3)
@@ -372,35 +373,23 @@ let goldbach num =
 
 (* PROBLEM 39, goldbach_list problem *)
 let rec goldbach_list lbound ubound =
+    let primes = all_primes 1 ubound in
+    let goldbach num =
+        let rec foo x =
+            if inside x primes && inside (num - x) primes
+            then ((num - x), x)
+            else foo (x - 2)
+        in foo (num - 3)
+    in
     let temp = if (lbound mod 2) = 0 then lbound else (lbound + 1) in
-    let rec aux acc counter =
+    let rec bar acc counter =
         if counter > ubound
         then rev acc
-        else aux ((counter, (goldbach counter))::acc) (counter+2) 
-    in aux [] temp
+        else bar ((counter, (goldbach counter))::acc) (counter+2) 
+    in bar [] temp
 ;;
 
 (* PROBLEM 39, goldbach_limit problem *)
-
-let rec goldbach_limit lbound ubound limit =
-    let primes = all_primes lbound ubound in
-    let bounded_goldbach num limit =
-        if limit > (num / 2) then None else
-        let rec aux x =
-            match x with
-            | x when x > (num - limit) -> None
-            | x when inside x primes && inside (num - x) primes -> Some (x, (num - x))
-            | x -> aux (x + 2)
-        in aux (if (limit mod 2) = 0 then (limit + 1) else limit)
-    in
-        let temp = if (lbound mod 2) = 0 then lbound else (lbound + 1) in
-        let rec aux acc counter =
-            if counter > ubound
-            then rev acc
-            else
-                match bounded_goldbach counter limit with
-                | None -> aux acc (counter+2)
-                | Some x -> aux ((counter, x)::acc) (counter+2) 
-        in aux [] temp
-;;
+let goldbach_limit lbound ubound limit =
+    filter (fun (_,(x,y)) -> x >= limit && y >= limit) (goldbach_list lbound ubound);;
 
