@@ -370,7 +370,7 @@ let goldbach num =
     in aux (num - 3)
 ;;
 
-(* PROBLEM 39 *)
+(* PROBLEM 39, goldbach_list problem *)
 let rec goldbach_list lbound ubound =
     let temp = if (lbound mod 2) = 0 then lbound else (lbound + 1) in
     let rec aux acc counter =
@@ -380,24 +380,27 @@ let rec goldbach_list lbound ubound =
     in aux [] temp
 ;;
 
-let bounded_goldbach num limit =
-    let rec aux x =
-        match x with
-        | x when x < limit -> None
-        | x when is_prime x && is_prime (num - x) -> Some ((num - x), x)
-        | x -> aux (x - 2)
-    in aux (num - limit)
-;;
+(* PROBLEM 39, goldbach_limit problem *)
 
 let rec goldbach_limit lbound ubound limit =
-    let temp = if (lbound mod 2) = 0 then lbound else (lbound + 1) in
-    let rec aux acc counter =
-        if counter > ubound
-        then rev acc
-        else
-            match bounded_goldbach counter limit with
-            | None -> aux acc (counter+2)
-            | Some x -> aux ((counter, x)::acc) (counter+2) 
-    in aux [] temp
+    let primes = all_primes lbound ubound in
+    let bounded_goldbach num limit =
+        if limit > (num / 2) then None else
+        let rec aux x =
+            match x with
+            | x when x > (num - limit) -> None
+            | x when inside x primes && inside (num - x) primes -> Some (x, (num - x))
+            | x -> aux (x + 2)
+        in aux (if (limit mod 2) = 0 then (limit + 1) else limit)
+    in
+        let temp = if (lbound mod 2) = 0 then lbound else (lbound + 1) in
+        let rec aux acc counter =
+            if counter > ubound
+            then rev acc
+            else
+                match bounded_goldbach counter limit with
+                | None -> aux acc (counter+2)
+                | Some x -> aux ((counter, x)::acc) (counter+2) 
+        in aux [] temp
 ;;
 

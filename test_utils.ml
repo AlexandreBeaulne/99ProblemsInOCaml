@@ -81,5 +81,10 @@ let () =
     assert(find (fun x -> x > 5) [1; 2; 3; 4; 5; 3; 3; 3; 1; 2; 3] = None);
     print_string "PASSED\n";
 
+    print_string "Testing memoize... ";
+    let memo_exp = memoize exp in
+    assert(exp 3 4 = memo_exp 3 4);
+    assert(exp (-3) 4 = memo_exp (-3) 4);
+    print_string "PASSED\n";
 ;;
 

@@ -191,11 +191,10 @@ let memoize func =
 
 (* Other *)
 
-let time action arg =
+let time f x =
+    let t0 = Unix.gettimeofday() in
+    let _ = f x in
+    let diff = Unix.gettimeofday() -. t0 in
     (* in milliseconds *)
-    let start_time = Unix.gettimeofday() in
-    ignore (action arg);
-    let finish_time = Unix.gettimeofday() in
-    1000.0 *. (finish_time -. start_time)
+    1000.0 *. diff
 ;;
-
